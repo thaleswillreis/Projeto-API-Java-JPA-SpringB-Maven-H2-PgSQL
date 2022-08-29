@@ -15,15 +15,15 @@ import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import org.springframework.hateoas.RepresentationModel;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-	//inicio da entidade e nome da tabela
 @Entity
 @Table(name = "tb_product")
-public class Product implements Serializable {
+public class Product  extends RepresentationModel<Product> implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
-		//definição do ID e geração automática de valor para o id
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
@@ -32,16 +32,14 @@ public class Product implements Serializable {
 	private Double price;
 	private String imgUrl;
 	
-		//definindo o relacionamento de muitos para muitos e as chaves estrangeiras de Product
+		//chaves estrangeiras de Product
 		//uso do Set ao invés do List para não admitir itens repetidos
 	@ManyToMany
 	@JoinTable(name = "tb_product_cotegory", joinColumns = @JoinColumn(name = "product_id"), 
 	inverseJoinColumns = @JoinColumn(name = "category_id"))
 	private Set<Category> categories = new HashSet<>();
 	
-		//definindo o relacionamento de um para muitos
 		//OrderItem contem o id de OrderItemPK  que contem o product
-		//uso do Set ao invés do List para não admitir itens repetidos
 	@OneToMany(mappedBy = "id.product")
 	private Set<OrderItem> items = new HashSet<>();
 	

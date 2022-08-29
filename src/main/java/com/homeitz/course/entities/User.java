@@ -16,13 +16,11 @@ import org.springframework.hateoas.RepresentationModel;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-	//inicio da entidade e nome da tabela
 @Entity
 @Table(name = "tb_user")
 public class User extends RepresentationModel<User> implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
-		//definição do ID e geração automática de valor para o id
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
@@ -31,7 +29,7 @@ public class User extends RepresentationModel<User> implements Serializable {
 	private String phone;
 	private String password;
 	
-		//controle da associacao de mao dupla e relação de um para muitos da tabela
+		//controle da associacao de mao dupla
 	@JsonIgnore
 	@OneToMany(mappedBy = "client")
 	private List<Order> orders = new ArrayList<>();

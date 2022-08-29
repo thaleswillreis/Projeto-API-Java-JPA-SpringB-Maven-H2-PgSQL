@@ -23,14 +23,12 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import com.homeitz.course.entities.User;
 import com.homeitz.course.services.UserService;
 
-	//controlador Rest com caminho do end point "/users"
 @RestController
 public class UserResource {
 
 	@Autowired
 	private UserService service;
 
-		// retorna todos os usuarios pelo metodo get
 	@GetMapping
 	@RequestMapping("/users")
 	public ResponseEntity<List<User>> findAll() {
@@ -46,7 +44,6 @@ public class UserResource {
 		}
 	}
 
-	// retorna um usuario especifico pelo id
 	@GetMapping("/users/{id}")
 	public ResponseEntity<User> findById(@PathVariable(value = "id") long id) {
 		Optional<User> obj = Optional.ofNullable(service.findById(id));
@@ -61,20 +58,17 @@ public class UserResource {
 	@PostMapping
 	public ResponseEntity<User> insert(@RequestBody User obj) {
 		obj = service.insert(obj);
-			// var do tipo URI que recebe o id do obj e converte para o seu tipo URI
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(obj.getId()).toUri();
 		return ResponseEntity.created(uri).body(obj);
 
 	}
 
-		// deleta um usuario especifico pelo id
 	@DeleteMapping(value = "/{id}")
 	public ResponseEntity<Void> delete(@PathVariable Long id) {
 		service.delete(id);
 		return ResponseEntity.noContent().build();
 	}
 
-		// atualiza um usuário a partir do id
 	@PutMapping(value = "/{id}")
 	public ResponseEntity<User> update(@PathVariable Long id, @RequestBody User obj) {
 		obj = service.update(id, obj);

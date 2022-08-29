@@ -25,30 +25,25 @@ public class UserService {
 		return repository.findAll();
 	}
 
-		//Busca
-		//lanca um exception se o get falhar
 	public User findById(Long id) {
 		Optional<User> obj = repository.findById(id);
 		return obj.orElseThrow(() -> new ResourceNotFoundException(id));
 	}
 
-		//Insert
 	public User insert(User obj) {
 		return repository.save(obj);
 	}
 
-		//Delete
 	public void delete(Long id) {
 		try {
 			repository.deleteById(id);
-		} catch (EmptyResultDataAccessException e) { //captura a excecao especificada
-			throw new ResourceNotFoundException(id); //lanca a msg de erro personalizada
+		} catch (EmptyResultDataAccessException e) {
+			throw new ResourceNotFoundException(id);
 		} catch (DataIntegrityViolationException e) {
 			throw new DatabaseException(e.getMessage());
 		}
 	}
 
-		//Update
 	public User update(Long id, User obj) {
 		try {
 			User entity = repository.getOne(id);
@@ -63,7 +58,5 @@ public class UserService {
 		entity.setName(obj.getName());
 		entity.setEmail(obj.getEmail());
 		entity.setPhone(obj.getPhone());
-
 	}
-
 }
