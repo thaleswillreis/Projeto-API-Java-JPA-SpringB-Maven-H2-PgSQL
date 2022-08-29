@@ -17,38 +17,35 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+import org.springframework.hateoas.RepresentationModel;
+
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.homeitz.course.entities.enums.OrderStatus;
 
-	//inicio da entidade e nome da tabela
 @Entity
 @Table(name = "tb_order")
-public class Order implements Serializable {
+public class Order extends RepresentationModel<Order> implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
-		//definição do ID e geração automática de valor para o id
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-		//formatação da serialização do objeto moment e o padrão de exibição e a zona de fuso horário
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'", timezone = "GMT")
 	private Instant moment;
 
 	private Integer orderStatus;
 
-		//definição da relação de muitos para um e da chave estrangeira User em Order
+		//chave estrangeira User em Order
 	@ManyToOne
 	@JoinColumn(name = "client_id")
 	private User client;
 	
-		//definição da relação de um para muitos
 		//mapeia o order do id em OrderItem que tem o atributo OrderItemPK
 	@OneToMany(mappedBy = "id.order")
 	private Set<OrderItem> items = new HashSet<>();
 
-		//definição da relação de um para um
 		//mapeando as duas entidades para terem o mesmo id
 	@OneToOne(mappedBy = "order", cascade = CascadeType.ALL)
 	private Payment payment;

@@ -1,8 +1,13 @@
 package com.homeitz.course.resources;
 
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
+
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -12,26 +17,35 @@ import org.springframework.web.bind.annotation.RestController;
 import com.homeitz.course.entities.Order;
 import com.homeitz.course.services.OrderService;
 
-	//controlador Rest com caminho do end point "/orders"
 @RestController
-@RequestMapping(value = "/orders")
 public class OrderResource {
-	
+
 	@Autowired
 	private OrderService service;
-	
-		// retorna todos os "order" pelo metodo get
+
 	@GetMapping
-	public ResponseEntity<List<Order>> findAll() {		
+	@RequestMapping(value = "/orders")
+	public ResponseEntity<List<Order>> findAll() {
 		List<Order> list = service.findAll();
-		return ResponseEntity.ok().body(list);
-	}
-	
-		// retorna um "order" especifico pelo id
-	@GetMapping(value = "/{id}")
-	public ResponseEntity<Order> findById(@PathVariable Long id) {
-		Order obj = service.findById(id);
-		return ResponseEntity.ok().body(obj);
+		if (list.isEmpty()) {
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		} else {
+			for (Order order : list) {
+				long id = order.getId();
+				order.add(linkTo(methodOn(OrderResource.class).findById(id)).withSelfRel());
+			}
+			return new ResponseEntity<List<Order>>(list, HttpStatus.OK);
+		}
 	}
 
+	@GetMapping(value = "/orders/{id}")
+	public ResponseEntity<Order> findById(@PathVariable(value = "id") long id) {
+		Optional<Order> obj = Optional.ofNullable(service.findById(id));
+		if (!obj.isPresent()) {
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		} else {
+			obj.get().add(linkTo(methodOn(OrderResource.class).findAll()).withRel("Lista de Pedidos"));
+			return new ResponseEntity<Order>(obj.get(), HttpStatus.OK);
+		}
+	}
 }
