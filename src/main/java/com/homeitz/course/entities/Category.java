@@ -12,21 +12,21 @@ import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
+import org.springframework.hateoas.RepresentationModel;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-	//inicio da entidade e nome da tabela
 @Entity
 @Table(name = "tb_category")
-public class Category implements Serializable {
+public class Category extends RepresentationModel<Category> implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
-		//definição do ID e geração automática de valor para o id
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	private String name;
 	
-		//controle da associacao de mao dupla e relação de muitos para muitos da tabela
+		//controle da associacao de mao dupla
 	@JsonIgnore
 	@ManyToMany(mappedBy = "categories")
 	private Set<Product> products = new HashSet<>();
