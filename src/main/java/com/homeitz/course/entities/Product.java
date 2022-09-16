@@ -5,6 +5,7 @@ import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -27,9 +28,13 @@ public class Product  extends RepresentationModel<Product> implements Serializab
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
+	@Column(nullable = false, unique = true, length = 128)
 	private String name;
+	@Column(nullable = false, length = 256)
 	private String description;
+	@Column(nullable = false)
 	private Double price;
+	@Column(nullable = true, length = 128)
 	private String imgUrl;
 	
 		//chaves estrangeiras de Product

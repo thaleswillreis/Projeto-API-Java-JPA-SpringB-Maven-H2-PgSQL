@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -24,9 +25,13 @@ public class User extends RepresentationModel<User> implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
+	@Column(nullable = false, unique = true, length = 60)
 	private String name;
+	@Column(nullable = false, unique = true, length = 60)
 	private String email;
+	@Column(nullable = false, unique = true, length = 14)
 	private String phone;
+	@Column(nullable = false, length = 128)
 	private String password;
 	
 		//controle da associacao de mao dupla

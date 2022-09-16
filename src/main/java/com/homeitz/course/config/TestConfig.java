@@ -21,12 +21,11 @@ import com.homeitz.course.repositories.OrderRepository;
 import com.homeitz.course.repositories.ProductRepository;
 import com.homeitz.course.repositories.UserRepository;
 
-	//classe de configuração do profile de teste com dados mock para popular o BD H2 em memória
+	//classe de configuração do profile de teste com dados mock para popular o BD H2
 @Configuration
 @Profile("test")
 public class TestConfig implements CommandLineRunner {
 	
-		//instancias de repositórios herdando de JpaRepository
 	@Autowired
 	private UserRepository userRepository;
 	
@@ -42,7 +41,7 @@ public class TestConfig implements CommandLineRunner {
 	@Autowired
 	private OrderItemRepository orderItemRepository;
 
-		//implementação do método run da interface CommandLineRunner
+		//método run da interface CommandLineRunner
 	@Override
 	public void run(String... args) throws Exception {
 

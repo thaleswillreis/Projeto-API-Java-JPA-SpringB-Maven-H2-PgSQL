@@ -6,6 +6,7 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 import java.net.URI;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -20,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import com.homeitz.course.dto.UserDto;
 import com.homeitz.course.entities.User;
 import com.homeitz.course.services.UserService;
 
@@ -30,6 +32,23 @@ public class UserResource {
 	private UserService service;
 
 	@GetMapping
+	@RequestMapping("/users")
+	public ResponseEntity<List<UserDto>> findAll() {
+		List<User> list = service.findAll();
+		List<UserDto> listDto = list.stream().map(x -> new UserDto(x)).collect(Collectors.toList());
+		if (list.isEmpty()) {
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		} else {
+			for (User user : list) {
+				long id = user.getId();
+				user.add(linkTo(methodOn(UserResource.class).findById(id)).withSelfRel());
+			}
+			return new ResponseEntity<List<UserDto>>(listDto, HttpStatus.OK);
+		}
+	}
+	
+	/*
+	 @GetMapping
 	@RequestMapping("/users")
 	public ResponseEntity<List<User>> findAll() {
 		List<User> list = service.findAll();
@@ -43,6 +62,7 @@ public class UserResource {
 			return new ResponseEntity<List<User>>(list, HttpStatus.OK);
 		}
 	}
+	 */
 
 	@GetMapping("/users/{id}")
 	public ResponseEntity<User> findById(@PathVariable(value = "id") long id) {

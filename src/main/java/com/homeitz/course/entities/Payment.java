@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.time.Instant;
 import java.util.Objects;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -14,16 +15,15 @@ import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-	//inicio da entidade e nome da tabela
 @Entity
 @Table(name = "tb_payment")
 public class Payment  implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
-		//definição do ID e geração automática de valor para o id
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
+	@Column(nullable = false)
 	private Instant moment;
 	
 		//controle da associacao de mao dupla, relação de um para um da tabela e designação de chave composta

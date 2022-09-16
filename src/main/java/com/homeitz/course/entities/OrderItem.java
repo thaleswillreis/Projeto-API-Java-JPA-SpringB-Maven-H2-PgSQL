@@ -3,6 +3,7 @@ package com.homeitz.course.entities;
 import java.io.Serializable;
 import java.util.Objects;
 
+import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.Table;
@@ -10,7 +11,6 @@ import javax.persistence.Table;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.homeitz.course.entities.pk.OrderItemPK;
 
-	//inicio da entidade e nome da tabela
 @Entity
 @Table(name = "tb_order_item")
 public class OrderItem  implements Serializable {
@@ -19,8 +19,9 @@ public class OrderItem  implements Serializable {
 		//instanciação da classe aux para o id composto para não iniciar com valor null
 	@EmbeddedId
 	private OrderItemPK id = new OrderItemPK();  
-	                                            
+	@Column(nullable = false)
 	private Integer quantity;
+	@Column(nullable = false)
 	private Double price;
 
 	public OrderItem( ) {
@@ -69,7 +70,6 @@ public class OrderItem  implements Serializable {
 		this.price = price;
 	}
 
-		//operação e retorno do subtotal do pedido
 	public Double getSubTotal() {
 		return price * quantity;
 	}
