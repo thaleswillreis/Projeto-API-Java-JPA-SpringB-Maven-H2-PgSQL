@@ -10,6 +10,7 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
+import com.homeitz.course.dto.UserDto;
 import com.homeitz.course.entities.User;
 import com.homeitz.course.repositories.UserRepository;
 import com.homeitz.course.services.exceptions.DatabaseException;
@@ -32,6 +33,10 @@ public class UserService {
 
 	public User insert(User obj) {
 		return repository.save(obj);
+	}
+	
+	public User fromDto(UserDto objDto) {
+		return new User(objDto.getId(), objDto.getName(), objDto.getEmail(), objDto.getPhone(), objDto.getPassword());
 	}
 
 	public void delete(Long id) {
