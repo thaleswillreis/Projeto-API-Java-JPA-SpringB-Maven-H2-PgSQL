@@ -5,10 +5,11 @@ import static org.junit.Assert.assertFalse;
 
 import java.util.Optional;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 
@@ -19,6 +20,7 @@ import com.homeitz.course.services.exceptions.ResourceNotFoundException;
 @SpringBootTest
 @RunWith(SpringRunner.class)
 @WebAppConfiguration
+@ActiveProfiles("test")
 public class UserServiceTest {
 	
 	@Autowired
